@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="MondialRelayLivraison"
+    targetNamespace="http://www.mondialrelay.com/livraison"
+    xmlns:tns="http://www.mondialrelay.com/livraison"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.mondialrelay.com/livraison">
+            <xs:element name="Adresse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Rue" type="xs:string" />
+                        <xs:element name="Ville" type="xs:string" />
+                        <xs:element name="CodePostal" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LivraisonRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="expeditionAdresse" type="tns:Adresse" />
+                        <xs:element name="DestintionAdresse" type="tns:Adresse" />
+                        <xs:element name="Poids" type="xs:int" />
+                        <xs:element name="ModeLivraison" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="LivraisonResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="LivraisonId" type="xs:string" />
+                        <xs:element name="Prix" type="xs:decimal" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+
+    <wsdl:message name="LivraisonRequestMessage">
+        <wsdl:part name="parameters" element="tns:LivraisonRequest" />
+    </wsdl:message>
+    <wsdl:message name="LivraisonResponseMessage">
+        <wsdl:part name="parameters" element="tns:LivraisonResponse" />
+    </wsdl:message>
+
+    <wsdl:portType name="MondialRelayLivraisonPortType">
+        <wsdl:operation name="DemanderLivraison">
+            <wsdl:input message="tns:LivraisonRequestMessage" />
+            <wsdl:output message="tns:LivraisonResponseMessage" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="MondialRelayLivraisonBinding" type="tns:MondialRelayLivraisonPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="DemanderLivraison">
+            <soap:operation soapAction="http://www.mondialrelay.com/livraison/DemanderLivraison" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+
