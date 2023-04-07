@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="GestionComptesAWS"
+    targetNamespace="http://aws.example.com/comptes"
+    xmlns:tns="http://aws.example.com/comptes"
+    xmlns:aws="http://aws.example.com/aws"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://aws.example.com/comptes">
+            <xs:element name="Compte">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="IdCompte" type="xs:string" />
+                        <xs:element name="NomCompte" type="xs:string" />
+                        <xs:element name="Email" type="xs:string" />
+                        <xs:element name="Statut" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RequeteCreerCompte">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="NomCompte" type="xs:string" />
+                        <xs:element name="Email" type="xs:string" />
+                        <xs:element name="MotDePasse" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ReponseCreerCompte">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="IdCompte" type="xs:string" />
+                        <xs:element name="NomCompte" type="xs:string" />
+                        <xs:element name="Email" type="xs:string" />
+                        <xs:element name="Statut" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="RequeteModifierCompte">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="IdCompte" type="xs:string" />
+                        <xs:element name="NouveauNomCompte" type="xs:string" />
+                        <xs:element name="NouvelEmail" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ReponseModifierCompte">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="IdCompte" type="xs:string" />
+                        <xs:element name="NomCompte" type="xs:string" />
+                        <xs:element name="Email" type="xs:string" />
+                        <xs:element name="Statut" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+
+       <wsdl:message name="MessageRequeteCreerCompte">
+        <wsdl:part name="parametres" element="tns:RequeteCreerCompte" />
+    </wsdl:message>
+
+    <wsdl:message name="MessageReponseCreerCompte">
+        <wsdl:part name="resultat" element="tns:ReponseCreerCompte" />
+    </wsdl:message>
+
+    <wsdl:portType name="GestionComptesPortType">
+        <wsdl:operation name="creerCompte">
+            <wsdl:input message="tns:MessageRequeteCreerCompte" />
+            <wsdl:output message="tns:MessageReponseCreerCompte" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="GestionComptesBinding" type="tns:GestionComptesPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    </wsdl:binding>
+
+    <wsdl:service name="GestionComptesService">
+        <wsdl:port name="GestionComptesPort" binding="tns:GestionComptesBinding">
+            <soap:address location="http://aws.example.com/comptes" />
+        </wsdl:port>
+    </wsdl:service>
+    
+</wsdl:definitions>
+
