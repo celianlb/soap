@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="StripePaymentService"
+    targetNamespace="http://example.com/payment"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:tns="http://example.com/payment"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://example.com/payment">
+            <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <xsd:element name="CardDetails">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="numéroCarte" type="xsd:string"/>
+                        <xsd:element name="expirationMois" type="xsd:integer"/>
+                        <xsd:element name="expirationAn" type="xsd:integer"/>
+                        <xsd:element name="cvvNumber" type="xsd:integer"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="PaymentResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="paymentId" type="xsd:string"/>
+                        <xsd:element name="status" type="xsd:string"/>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="ProcessusPaymentRequest">
+        <wsdl:part name="cardDetails" element="tns:CardDetails"/>
+    </wsdl:message>
+
+    <wsdl:message name="ProcessusPaymentResponse">
+        <wsdl:part name="paymentResponse" element="tns:PaymentResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="StripePaymentPortType">
+        <wsdl:operation name="ProcessusPayment">
+            <wsdl:input message="tns:ProcessusPaymentRequest"/>
+            <wsdl:output message="tns:ProcessusPaymentResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="StripePaymentBinding" type="tns:StripePaymentPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ProcessusPayment">
+            <soap:operation soapAction="http://example.com/payment/ProcessPayment"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="StripePaymentService">
+        <wsdl:port name="StripePaymentPort" binding="tns:StripePaymentBinding">
+            <soap:address location="https://api.stripe.com/v1/charges"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
